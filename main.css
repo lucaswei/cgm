@@ -1,0 +1,22 @@
+#main {
+	margin:auto;
+	width:960px;
+}
+	@font-face{
+		font-family:monospace;
+		src:url(53-monospace-lcd-filter.conf);
+	}
+	#main #codeboard{
+		float:right;
+		width:700px;
+		height:600px;
+		font-family:monospace;
+	}
+	#main #site{
+		float:left;
+		width:200px;
+	}
+	#costumize #cosboard{
+		width:500px;
+		height:200px;
+	}

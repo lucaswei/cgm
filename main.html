@@ -1,0 +1,318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<title>Code generating machine</title>
+	<script type="text/javascript" src="js/jquery-1.7.1.js"></script>
+	<script type="text/javascript" src="js/bootstrap-modal.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css" />
+	<link rel="stylesheet" href="main.css" type="text/css" />
+	<script type="text/javascript">
+		$('#myModal').modal({
+			backdrop:false
+		});
+	</script>
+</head>
+<body>
+	<!-- nav -->
+	<div class="navbar nav-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="#">
+					Code Generation machine
+				</a>
+				<ul class="nav">
+					<li><a href="#interupt" data-toggle="modal" >Interupts</a></li>
+					<li><a href="#oper" data-toggle="modal">operation modes</a></li>
+					<li><a href="#watchdog" data-toggle="modal">watchdog</a></li>
+					<li><a href="#timer" data-toggle="modal">timer</a></li>
+					<li><a href="#RTC">RTC</a></li>
+					<li><a href="#init">Initialize</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- nav -->
+	<!-- interupt -->
+	<div class="modal hide fade" id="interupt">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">o</a>
+			<h3>interupt</h3>
+		</div>
+		<div class="modal-body" style="overflow-y:scroll;height:320px;">
+			<form id="int">
+				<table class="table table-boardered table-condensed" >
+					<thead>
+						<tr>
+							<th>select</th>
+							<th>source</th>
+							<th>Flag</th>
+							<th>Word address</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="radio" name="interupt" value="0FFFEh" /></td>
+							<td>System Reset</td>
+							<td>WDTIFG, KEYV (SYSRSTIV)</td>
+							<td>0FFFEh</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="interupt" value="0FFFCh" /></td>
+							<td>System NMI</td>
+							<td>SVMLIFG, SVMHIFG, DLYLIFG, DLYHIFG, <br/>
+							VLRLIFG, VLRHIFG, VMAIFG, JMBNIFG, <br/>
+							JMBOUTIFG (SYSSNIV) <br/>
+							</td>
+							<td>0FFFCh</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="interupt" value="0FFFAh" /></td>
+							<td>User NMI</td>
+							<td>NMIIFG, OFIFG, ACCVIFG (SYSUNIV) </td>
+							<td>0FFEAh</td>
+						<tr>
+							<td><input type="radio" name="interupt" value="0FFECh" /></td>
+							<td>TA0</td>
+							<td>TA0CCR0 CCIFG0</td>
+							<td>0FFECh</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="interupt" value="0FFEAh"/></td>
+							<td>TA0</td>
+							<td>TA0CCR1 CCIFG1...TA0CCR4 CCIFG4</td>
+							<td>0FFEAh</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="interupt" value="0FFE2h"/></td>
+							<td>TA1</td>
+							<td>TA0CCR0 CCIFG0</td>
+							<td>0FFE2h</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="interupt" value="0ffE0h"/></td>
+							<td>TA1</td>
+							<td>TA1CCR1 CCIFG1...TA1CCR4 CCIFG4</td>
+							<td>0FFE0h</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="interupt" value="0FFDEh"/></td>
+							<td>I/O Port P1</td>
+							<td>P1IFG.0 to P1IFG.7 (P1IV)</td>
+							<td>0FFDEh</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="interupt" value="0FFD4h"/></td>
+							<td>I/O Port P2</td>
+							<td>P2IFG.0 to P2IFG.7 (P2IV)</td>
+							<td>0FFD4h</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="interupt" value="0FFD2h"/></td>
+							<td>RTC_A</td>
+							<td>RTCRDYIFG, RTCTEVIFG, RTCAIFG,<br/>
+							RT0PSIFG, RT1PSIFG (RTCIV)
+							</td>
+							<td>0FFD2h</td>
+						</tr>
+					</tbody>
+				</table>
+				function name:<input type="text" name="function_name"/>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary">comfirm</a>
+			<a href="#" class="btn" data-dismiss="modal" >Close</a>
+		</div>
+	</div>
+	<!-- interupt -->
+	<!-- operation -->
+	<div class="modal fade hide" id="oper">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">o</a>
+			<h3>operation modes</h3>
+		</div>
+		<div class="modal-body">
+			<form id="ope">
+				<table class="table table-boardered">
+					<thead>
+						<tr>
+							<th>select</th>
+							<th>mode</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="radio" name="mode" value="AM"</td>
+							<td>Active mode</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="mode" value="LPM0"</td>
+							<td>Low-power mode 0</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="mode" value="LPM1"</td>
+							<td>Low-power mode 1</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="mode" value="LPM2"</td>
+							<td>Low-power mode 2</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="mode" value="LPM3"</td>
+							<td>Low-power mode 3</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="mode" value="LPM4"</td>
+							<td>Low-power mode 4</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary">comfirm</a>
+			<a href="#" class="btn" data-dismiss="modal" >Close</a>
+		</div>
+	</div>
+	<!-- operation -->
+	<!-- watchdog -->
+	<div class="modal hide fade" id="watchdog">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">o</a>
+			<h3>watchdog</h3>
+		</div>
+		<div class="modal-body">
+			<form id="wat">
+				<table class="table table-boardered" >
+					<thead>
+						<tr>
+							<th>select</th>
+							<th>source</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="checkbox" name="watchdog" value="WDTHOLD" /></td>
+							<td>WDTHOLD</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="watchdog" value="WDTSSEL" /></td>
+							<td>WDTSSEL</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="watchdog" value="WDTTMSEL" /></td>
+							<td>WDTTMSEL</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="watchdog" value="WDTCNCTL" /></td>
+							<td>WDTCNCTL</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="watchdog" value="WDTISx_1" /></td>
+							<td>WDTIS</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary">comfirm</a>
+			<a href="#" class="btn" data-dismiss="modal" >Close</a>
+		</div>
+	</div>
+	<!-- watchdog -->
+	<!-- timer -->
+	<div class="modal hide fade" id="timer">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">o</a>
+			<h3>timer</h3>
+		</div>
+		<div class="modal-body">
+			<form id="tim">
+				<table class="table table-boardered" >
+					<thead>
+						<tr>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="radio" name="type" value="CCR" /></td>
+							<td colspan="3">CCR</td>
+							<td><input type="radio" name="type" value="overflow" /></td>
+							<td colspan="3">overflow</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="timer" value="TA0" /></td>
+							<td colspan="3">TA0</td>
+							<td><input type="radio" name="timer" value="TA1" /></td>
+							<td colspan="3">TA1</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="ssel" value="TASSEL_0" /></td>
+							<td>TASSEL_0<br/>(SMLCK)</td>
+							<td><input type="radio" name="ssel" value="TASSEL_1" /></td>
+							<td>TASSEL_1<br/>(ACLK)</td>
+							<td><input type="radio" name="ssel" value="TASSEL_2" /></td>
+							<td>TASSEL_2<br/>(TACLK)</td>
+							<td><input type="radio" name="ssel" value="TASSEL_3" /></td>
+							<td>TASSEL_3<br/>(INCLK)</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="mc" value="MC_0" /></td>
+							<td>MC_0</td>
+							<td><input type="radio" name="mc" value="MC_1" /></td>
+							<td>MC_1</td>
+							<td><input type="radio" name="mc" value="MC_2" /></td>
+							<td>MC_2</td>
+							<td><input type="radio" name="mc" value="MC_3" /></td>
+							<td>MC_3</td>
+						</tr>
+					</tbody>
+				</table>
+				HZ:<input type="text" name="HZ_number"/>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary">comfirm</a>
+			<a href="#" class="btn" data-dismiss="modal" >Close</a>
+		</div>
+	</div>
+	<!-- timer -->
+	<!-- costumize -->
+	<div class="modal hide fade" id="costumize">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">o</a>
+			<h3>costumize</h3>
+		</div>
+		<div class="modal-body">
+			<p>costumize your code HERE!</p>
+			<textarea id="cosboard"></textarea>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn btn-primary">comfirm</a>
+			<a href="#" class="btn" data-dismiss="modal" >Close</a>
+		</div>
+	</div>
+	<!-- costumize -->
+	<div id="main">
+		<div id="site" class="well">
+			<ul class="nav nav-list">
+				<li class="nav-header">commonly used</li>
+				<li><a href="#for" >for loop</a></li>
+				<li><a href="#xor">xor</a></li>
+				<li><a href="#if_else">if...else...</a><li>
+				<li class="nav-header">costumize</li>
+				<li><a href="#f1">F1</a></li>
+				<li><a href="#f2">F2</a></li>
+				<li><a href="#f3">F3</a><li>
+				<li><a href="#f4">F4</a><li>
+			</ul>
+		</div>
+		<textarea id="codeboard"></textarea>
+	</div>
+</body>
+</html>
